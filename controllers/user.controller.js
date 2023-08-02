@@ -6,19 +6,23 @@ const jwt = require("jsonwebtoken");
 module.exports.userController = {
   // Регистрация пользователя
   registerUser: async (req, res) => {
-    const { login, password, name } = req.body;
-    const candidate = await User.findOne({ login });
+    const { firstName, lastName, email, number, password } = req.body;
+    const candidate = await User.findOne({ email });
     if (candidate) {
       return res
         .status(401)
-        .json({ error: "Пользователь с таким Логином уже существует" });
+        .json({
+          error: "Пользователь с таким Email или Номером уже существует",
+        });
     }
 
     const hash = await bcrypt.hash(password, Number(process.env.BCRYPT_ROUNDS));
 
     const user = await User.create({
-      name: name,
-      login: login,
+      firstName: firstName,
+      lastName: lastName,
+      number: number,
+      email: email,
       password: hash,
     });
 
@@ -29,12 +33,12 @@ module.exports.userController = {
     const { login, password } = req.body;
     const candidate = await User.findOne({ login: login });
     if (!candidate) {
-      return res.status(401).json({ error: "Неверный Логин или пароль" });
+      return res.status(401).json({ error: "Неверный Email или пароль" });
     }
     const valid = await bcrypt.compare(password, candidate.password);
 
     if (!valid) {
-      return res.status(401).json({ error: "Неверный Логин или пароль" });
+      return res.status(401).json({ error: "Неверный Email или пароль" });
     }
     const payload = {
       id: candidate._id,
