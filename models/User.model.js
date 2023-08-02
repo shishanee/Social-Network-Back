@@ -6,6 +6,24 @@ const userSchema = mongoose.Schema({
   number: String,
   email: String,
   password: String,
+  posts: [
+    {
+      ref: "Post",
+      type: mongoose.SchemaTypes.ObjectId,
+    },
+  ],
+  groups: [
+    {
+      ref: "Group",
+      type: mongoose.SchemaTypes.ObjectId,
+    },
+  ],
+  friends: [
+    {
+      ref: "User",
+      type: mongoose.SchemaTypes.ObjectId,
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);
