@@ -2,18 +2,27 @@ const { JsonWebTokenError } = require("jsonwebtoken");
 const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { post } = require("../routes/group.route");
 
 module.exports.userController = {
   // Регистрация пользователя
   registerUser: async (req, res) => {
-    const { firstName, lastName, email, number, password } = req.body;
+    const {
+      posts,
+      groups,
+      friends,
+      age,
+      firstName,
+      lastName,
+      email,
+      number,
+      password,
+    } = req.body;
     const candidate = await User.findOne({ email });
     if (candidate) {
-      return res
-        .status(401)
-        .json({
-          error: "Пользователь с таким Email или Номером уже существует",
-        });
+      return res.status(401).json({
+        error: "Пользователь с таким Email или Номером уже существует",
+      });
     }
 
     const hash = await bcrypt.hash(password, Number(process.env.BCRYPT_ROUNDS));
@@ -23,15 +32,20 @@ module.exports.userController = {
       lastName: lastName,
       number: number,
       email: email,
+      groups,
+      friends,
+      age,
+      image: req.file.path,
       password: hash,
+      posts: posts,
     });
 
     res.json(user);
   },
   // Вход в учетную запись
   login: async (req, res) => {
-    const { login, password } = req.body;
-    const candidate = await User.findOne({ login: login });
+    const { email, password } = req.body;
+    const candidate = await User.findOne({ email: email });
     if (!candidate) {
       return res.status(401).json({ error: "Неверный Email или пароль" });
     }
@@ -42,7 +56,7 @@ module.exports.userController = {
     }
     const payload = {
       id: candidate._id,
-      login: candidate.login,
+      email: candidate.email,
     };
 
     const token = await jwt.sign(payload, process.env.SECRET_JWT_KEY, {

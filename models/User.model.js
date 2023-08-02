@@ -2,10 +2,12 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
   firstName: String,
+  image: String,
   lastName: String,
   number: String,
   email: String,
   password: String,
+  age: String,
   posts: [
     {
       ref: "Post",
