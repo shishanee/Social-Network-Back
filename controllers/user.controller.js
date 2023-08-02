@@ -70,4 +70,18 @@ module.exports.userController = {
     const data = await User.findById(req.user.id);
     res.json(data);
   },
+
+  addFollow: async (req, res) => {
+    const data = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $addToSet: { friends: req.body.friends } },
+      { new: true }
+    ).populate("friends");
+
+    res.json(data.friends);
+  },
+  allFollow: async (req, res) => {
+    const data = await User.findById(req.user.id).populate("friends");
+    res.json(data.friends);
+  },
 };
