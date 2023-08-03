@@ -12,6 +12,7 @@ module.exports.userController = {
       groups,
       friends,
       age,
+      followers,
       firstName,
       lastName,
       email,
@@ -34,6 +35,7 @@ module.exports.userController = {
       email: email,
       groups,
       friends,
+      followers,
       age,
       image: req.file.path,
       password: hash,
@@ -78,7 +80,13 @@ module.exports.userController = {
       { new: true }
     ).populate("friends");
 
-    res.json(data.friends);
+    const newUser = await User.findByIdAndUpdate(
+      req.body.friends,
+      { $addToSet: { followers: req.user.id } },
+      { new: true }
+    );
+
+    res.json(newUser);
   },
   allFollow: async (req, res) => {
     const data = await User.findById(req.user.id).populate("friends");

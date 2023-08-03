@@ -4,6 +4,12 @@ const userSchema = mongoose.Schema({
   firstName: String,
   image: String,
   lastName: String,
+  followers: [
+    {
+      ref: "User",
+      type: mongoose.SchemaTypes.ObjectId,
+    },
+  ],
   number: String,
   email: String,
   password: String,
