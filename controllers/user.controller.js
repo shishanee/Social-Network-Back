@@ -37,7 +37,6 @@ module.exports.userController = {
       friends,
       followers,
       age,
-      image: req.file.path,
       password: hash,
       posts: posts,
     });
