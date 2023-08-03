@@ -90,6 +90,6 @@ module.exports.userController = {
   },
   allFollow: async (req, res) => {
     const data = await User.findById(req.user.id).populate("friends");
-    res.json(data.friends);
+    res.json(data);
   },
 };
