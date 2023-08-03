@@ -91,4 +91,8 @@ module.exports.userController = {
     const data = await User.findById(req.user.id).populate("friends");
     res.json(data);
   },
+  allUsers: async (req, res) => {
+    const data = await User.find();
+    res.json(data);
+  },
 };
