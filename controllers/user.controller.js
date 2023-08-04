@@ -102,7 +102,7 @@ module.exports.userController = {
       lastName: req.body.lastName,
       number: req.body.number,
       age: req.body.age
-  }, {new: true})
+  })
     res.json(data)
   }
 };
