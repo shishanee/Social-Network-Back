@@ -99,9 +99,9 @@ module.exports.userController = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       number: req.body.number,
-      age: req.body.age
-  })
-    res.json(data)
+      age: req.body.age,
+    });
+    res.json(data);
   },
   deleteFollow: async (req, res) => {
     const data = await User.findOneAndUpdate(

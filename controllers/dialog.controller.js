@@ -3,7 +3,7 @@ const Dialog = require("../models/Dialog.model");
 module.exports.dialogController = {
   // вывод одного диалога
   oneDialog: async (req, res) => {
-    const data = await Dialog.find({_id:req.params.id})
+    const data = await Dialog.find({ _id: req.params.id })
       .populate("you")
       .populate("user")
       .populate("messages.sender");
@@ -41,7 +41,10 @@ module.exports.dialogController = {
           $push: { messages: newMessage },
         },
         { new: true }
-      ).populate('messages.sender').populate('you').populate('user')
+      )
+        .populate("messages.sender")
+        .populate("you")
+        .populate("user");
 
       res.json(data);
     } catch (error) {
