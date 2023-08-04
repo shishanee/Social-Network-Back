@@ -12,5 +12,6 @@ router.get('/users', userController.allUsers) // все пользователи
 router.get('/allfollow', authMiddleware, userController.allFollow) // Все подписки
 router.patch('/addfollow', authMiddleware, userController.addFollow) // Подписаться
 router.patch('/user', authMiddleware, userController.changeUser) // Изменение юзера
+router.patch('/deletefollow', authMiddleware, userController.deleteFollow) // Отписаться
 
 module.exports = router;

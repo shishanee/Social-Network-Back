@@ -68,7 +68,9 @@ module.exports.userController = {
   },
   // вывод одного пользователя
   getUser: async (req, res) => {
-    const data = await User.findById(req.user.id);
+    const data = await User.findById(req.user.id)
+      .populate("friends")
+      .populate("followers");
     res.json(data);
   },
 
@@ -87,10 +89,6 @@ module.exports.userController = {
 
     res.json(newUser);
   },
-  allFollow: async (req, res) => {
-    const data = await User.findById(req.user.id).populate("friends");
-    res.json(data);
-  },
   allUsers: async (req, res) => {
     const data = await User.find();
     res.json(data);
@@ -104,5 +102,20 @@ module.exports.userController = {
       age: req.body.age
   })
     res.json(data)
-  }
+  },
+  deleteFollow: async (req, res) => {
+    const data = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $pull: { friends: req.body.friends } },
+      { new: true }
+    ).populate("friends");
+
+    const newUser = await User.findByIdAndUpdate(
+      req.body.friends,
+      { $pull: { followers: req.user.id } },
+      { new: true }
+    );
+
+    res.json(newUser);
+  },
 };

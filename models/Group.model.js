@@ -7,6 +7,7 @@ const groupSchema = mongoose.Schema({
   },
   name: String,
   discription: String,
+  image: String,
   followers: [
     {
       ref: "User",
