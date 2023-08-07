@@ -93,6 +93,16 @@ module.exports.userController = {
     const data = await User.find();
     res.json(data);
   },
+
+  changeUser: async (req, res) => {
+    const data = await User.findByIdAndUpdate(req.user.id, {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      number: req.body.number,
+      age: req.body.age,
+    });
+    res.json(data);
+  },
   deleteFollow: async (req, res) => {
     const data = await User.findOneAndUpdate(
       { email: req.user.email },
@@ -103,6 +113,21 @@ module.exports.userController = {
     const newUser = await User.findByIdAndUpdate(
       req.body.friends,
       { $pull: { followers: req.user.id } },
+      { new: true }
+    );
+
+    res.json(newUser);
+  },
+  deleteFriends: async (req, res) => {
+    const data = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $pull: { followers: req.body.friends } },
+      { new: true }
+    ).populate("friends");
+
+    const newUser = await User.findByIdAndUpdate(
+      req.body.friends,
+      { $pull: { friends: req.user.id } },
       { new: true }
     );
 
