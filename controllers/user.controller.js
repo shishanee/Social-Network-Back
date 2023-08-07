@@ -73,6 +73,12 @@ module.exports.userController = {
       .populate("followers");
     res.json(data);
   },
+  oneUser: async (req, res) => {
+    const data = await User.findById(req.params.id)
+      .populate("friends")
+      .populate("followers");
+    res.json(data);
+  },
 
   addFollow: async (req, res) => {
     const data = await User.findOneAndUpdate(
