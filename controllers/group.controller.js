@@ -4,7 +4,6 @@ module.exports.groupController = {
   createGroup: async (req, res) => {
     const { name, discription, followers, posts } = req.body;
     const data = await Group.create({
-      user: req.user.id,
       name,
       discription,
       followers,
