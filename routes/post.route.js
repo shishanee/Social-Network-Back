@@ -6,6 +6,7 @@ const router = Router();
 
 router.post("/post", authMiddleware, postController.createPost);
 router.get('/post', authMiddleware, postController.getUserPosts);
+router.get('/post/:id', authMiddleware, postController.getOnePost)
 router.delete('/post/:id', authMiddleware, postController.deletePost);
 router.patch('/post/:id', authMiddleware, postController.changePosts);
 router.patch('/post/like/:id', authMiddleware, postController.addLike)

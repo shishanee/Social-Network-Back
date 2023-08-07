@@ -12,8 +12,16 @@ module.exports.postController = {
 
   getUserPosts: async (req, res) => {
     const data = await Post.find({ user: req.user.id })
+    .populate('user')
     .populate('likes.user', '-password -groups -posts -friends -followers -__v')
     .populate('bans.user', '-password -groups -posts -friends -followers -__v');
+    res.json(data);
+  },
+
+  getOnePost: async (req, res) => {
+    const data = await Post.findById(req.params.id)
+    // .populate('likes.user', '-password -groups -posts -friends -followers -__v')
+    // .populate('bans.user', '-password -groups -posts -friends -followers -__v');
     res.json(data);
   },
 
