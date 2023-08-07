@@ -118,4 +118,19 @@ module.exports.userController = {
 
     res.json(newUser);
   },
+  deleteFriends: async (req, res) => {
+    const data = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $pull: { followers: req.body.friends } },
+      { new: true }
+    ).populate("friends");
+
+    const newUser = await User.findByIdAndUpdate(
+      req.body.friends,
+      { $pull: { friends: req.user.id } },
+      { new: true }
+    );
+
+    res.json(newUser);
+  },
 };
