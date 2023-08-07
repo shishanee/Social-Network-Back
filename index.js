@@ -13,6 +13,8 @@ app.use(cors());
 app.use(require('./routes/user.route'))
 app.use(require('./routes/group.route'))
 app.use(require('./routes/dialog.route'))
+app.use(require('./routes/post.route'))
+app.use(require('./routes/comment.route'))
 
 mongoose
   .connect(
