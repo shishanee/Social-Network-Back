@@ -121,12 +121,12 @@ module.exports.userController = {
   deleteFriends: async (req, res) => {
     const data = await User.findOneAndUpdate(
       { email: req.user.email },
-      { $pull: { followers: req.body.friends } },
+      { $pull: { followers: req.body.followers } },
       { new: true }
     ).populate("friends");
 
     const newUser = await User.findByIdAndUpdate(
-      req.body.friends,
+      req.body.followers,
       { $pull: { friends: req.user.id } },
       { new: true }
     );
