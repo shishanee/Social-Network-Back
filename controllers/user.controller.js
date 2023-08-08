@@ -1,5 +1,6 @@
 const { JsonWebTokenError } = require("jsonwebtoken");
 const User = require("../models/User.model");
+const Group = require("../models/Group.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { post } = require("../routes/group.route");
@@ -139,4 +140,43 @@ module.exports.userController = {
 
     res.json(newUser);
   },
+  followGroup: async (req, res) => {
+    try {
+      const data = await User.findByIdAndUpdate(
+      req.user.id,
+      { $addToSet: { groups: req.params.id } },
+      { new: true }
+      ).populate("groups");
+  
+      const Data = await Group.findByIdAndUpdate(
+        req.params.id, 
+        { $addToSet: { followers: req.user.id }},
+        { new: true }
+      );
+      res.json(Data)
+      
+    } catch (error) {
+      res.json(error.message)
+    }
+  },
+  
+unsubscribeGroup: async (req, res)=> {
+  try {
+    const data = await User.findByIdAndUpdate(
+      req.user.id,
+      { $pull: {groups: req.params.id }},
+      { new: true }
+    ).populate("groups");
+
+    const Data = await Group.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { followers: req.user.id }},
+      { new: true}
+    );
+
+    res.json(Data)
+  } catch (error) {
+    res.json(error.message)
+  }
+}
 };
