@@ -27,22 +27,23 @@ module.exports.dialogController = {
   createDialog: async (req, res) => {
     const date = await Dialog.find().populate("you").populate("user");
     const newDate = date.find((item) => {
-      if (item.user.id === req.body.user && item.you.id === req.user.id) {
+      if (item.user._id == req.body.user && item.you._id == req.user.id) {
         return item;
       }
     });
+
     const newData = await Dialog.find().populate("you").populate("user");
 
     if (newDate) {
-      return res.json(newData);
+      return res.json(newDate);
     }
+
     const data = await Dialog.create({
       you: req.user.id,
       user: req.body.user,
     });
-    const newData1 = await Dialog.find().populate("you").populate("user");
 
-    res.json(newData1);
+    res.json(data);
   },
   // отправка сообщения
   addMessage: async (req, res) => {
