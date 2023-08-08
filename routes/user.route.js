@@ -14,5 +14,7 @@ router.patch("/addfollow", authMiddleware, userController.addFollow); // Под�
 router.patch("/user", authMiddleware, userController.changeUser); // Изменение юзера
 router.patch("/deletefollow", authMiddleware, userController.deleteFollow); // Отписаться
 router.patch('/deletefriends', authMiddleware, userController.deleteFriends) // Отписать
+router.patch("/follow/group/:id", authMiddleware, userController.followGroup)//Подписка на группу
+router.patch("/unsubscribe/group/:id", authMiddleware, userController.unsubscribeGroup)//отписка от группы 
 
 module.exports = router;
