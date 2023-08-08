@@ -1,12 +1,4 @@
-
-
-
-
-
-
-
 const mongoose = require("mongoose");
-const moment = require('moment');
 
 const postSchema = mongoose.Schema({
   user: {
@@ -17,7 +9,6 @@ const postSchema = mongoose.Schema({
   image: [],
   date: {
     type: Date,
-    // default: moment().format('D MMM в HH:mm:ss'), 
     default: Date.now
   },
   likes: [
