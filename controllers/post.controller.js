@@ -5,14 +5,17 @@ module.exports.postController = {
     const data = await Post.create({
       user: req.user.id,
       text: req.body.text,
-      image: req.body.image,
-    });
+      image: req.files,
+    }, 
+    )
+    await data.save()
     res.json(data);
   },
 
   getUserPosts: async (req, res) => {
     const data = await Post.find({ user: req.user.id })
     .populate('user')
+    .populate('image')
     .populate('likes.user', '-password -groups -posts -friends -followers -__v')
     .populate('bans.user', '-password -groups -posts -friends -followers -__v');
     res.json(data);
