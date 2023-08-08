@@ -31,17 +31,18 @@ module.exports.dialogController = {
         return item;
       }
     });
+    const newData = await Dialog.find().populate("you").populate("user");
 
     if (newDate) {
-      return res.json("Уже есть такой диалог");
+      return res.json(newData);
     }
     const data = await Dialog.create({
       you: req.user.id,
       user: req.body.user,
     });
+    const newData1 = await Dialog.find().populate("you").populate("user");
 
-    const newData = await Dialog.find().populate("you").populate("user");
-    res.json(newData);
+    res.json(newData1);
   },
   // отправка сообщения
   addMessage: async (req, res) => {
