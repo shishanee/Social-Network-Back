@@ -77,7 +77,8 @@ module.exports.userController = {
   oneUser: async (req, res) => {
     const data = await User.findById(req.params.id)
       .populate("friends")
-      .populate("followers");
+      .populate("followers")
+      .populate('groups')
     res.json(data);
   },
 

@@ -10,15 +10,17 @@ module.exports.groupController = {
       followers,
       posts,
     });
-    res.json(data);
+    const date = await Group.find();
+
+    res.json(date);
   },
   getGroup: async (req, res) => {
     const data = await Group.find();
     res.json(data);
   },
   getOneGroup: async (req, res) => {
-    const data= await Group.findById(req.params.id);
+    const data = await Group.findById(req.params.id);
 
-    res.json(data)
-  }
+    res.json(data);
+  },
 };
