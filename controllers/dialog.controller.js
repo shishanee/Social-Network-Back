@@ -10,6 +10,11 @@ module.exports.dialogController = {
     res.json(data);
   },
 
+  deleteDialog: async (req, res) => {
+    const data = await Dialog.findByIdAndRemove(req.params.id);
+    res.json(data);
+  },
+
   // вывод всех диалогов
   getDialogs: async (req, res) => {
     const data = await Dialog.find()
@@ -20,11 +25,23 @@ module.exports.dialogController = {
   },
   // создание чата
   createDialog: async (req, res) => {
+    const date = await Dialog.find().populate("you").populate("user");
+    const newDate = date.find((item) => {
+      if (item.user.id === req.body.user) {
+        return item;
+      }
+    });
+
+    if (newDate) {
+      return res.json("Уже есть такой диалог");
+    }
     const data = await Dialog.create({
       you: req.user.id,
       user: req.body.user,
     });
-    res.json(data);
+
+    const newData = await Dialog.find().populate("you").populate("user");
+    res.json(newData);
   },
   // отправка сообщения
   addMessage: async (req, res) => {

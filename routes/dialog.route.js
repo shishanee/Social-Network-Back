@@ -6,6 +6,7 @@ const router = Router();
 
 router.post("/createDialog", authMiddleware, dialogController.createDialog); // создание чата
 router.get("/oneDialog/:id", dialogController.oneDialog); // создание чата
+router.delete("/dialogdelete/:id", dialogController.deleteDialog); // удаление чата
 router.patch("/addmessage/:id", authMiddleware, dialogController.addMessage); // отправка сообщения
 router.get("/getDialogs", dialogController.getDialogs); // вывод всех диалогов
 
