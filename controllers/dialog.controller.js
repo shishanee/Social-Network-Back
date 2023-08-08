@@ -27,7 +27,7 @@ module.exports.dialogController = {
   createDialog: async (req, res) => {
     const date = await Dialog.find().populate("you").populate("user");
     const newDate = date.find((item) => {
-      if (item.user.id === req.body.user) {
+      if (item.user.id === req.body.user && item.you.id === req.user.id) {
         return item;
       }
     });
