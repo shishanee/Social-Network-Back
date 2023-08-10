@@ -3,7 +3,7 @@ const User = require("../models/User.model");
 const Group = require("../models/Group.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { post } = require("../routes/group.route");
+const { post, use } = require("../routes/group.route");
 
 module.exports.userController = {
   // Регистрация пользователя
@@ -78,7 +78,7 @@ module.exports.userController = {
     const data = await User.findById(req.params.id)
       .populate("friends")
       .populate("followers")
-      .populate('groups')
+      .populate("groups");
     res.json(data);
   },
 
@@ -144,40 +144,71 @@ module.exports.userController = {
   followGroup: async (req, res) => {
     try {
       const data = await User.findByIdAndUpdate(
-      req.user.id,
-      { $addToSet: { groups: req.params.id } },
-      { new: true }
+        req.user.id,
+        { $addToSet: { groups: req.params.id } },
+        { new: true }
       ).populate("groups");
-  
+
       const Data = await Group.findByIdAndUpdate(
-        req.params.id, 
-        { $addToSet: { followers: req.user.id }},
+        req.params.id,
+        { $addToSet: { followers: req.user.id } },
         { new: true }
       );
-      res.json(Data)
-      
+      res.json(Data);
     } catch (error) {
-      res.json(error.message)
+      res.json(error.message);
     }
   },
-  
-unsubscribeGroup: async (req, res)=> {
-  try {
-    const data = await User.findByIdAndUpdate(
-      req.user.id,
-      { $pull: {groups: req.params.id }},
-      { new: true }
-    ).populate("groups");
+  addImage: async (req, res) => {
+    try {
+      const data = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          $push: { images: req.file.path },
+        },
+        { new: true }
+      ).populate('images')
 
-    const Data = await Group.findByIdAndUpdate(
-      req.params.id,
-      { $pull: { followers: req.user.id }},
-      { new: true}
-    );
+      res.json(data.images);
+    } catch (error) {
+      res.json(error.message);
+    }
+  },
+  findImages: async (req, res) => {
+    try {
+      const data = await User.findById(req.user.id).populate("images");
+      res.json(data.images);
+    } catch (error) {
+      res.json(error.message);
+    }
+  },
+  onePeopleImage: async(req,res) => {
+    try {
+      const data = await User.findById(req.params.id).populate('images')
+      res.json(data.images)
+    } catch (error) {
+      res.json(error.message);
+      
+    }
+  },
 
-    res.json(Data)
-  } catch (error) {
-    res.json(error.message)
-  }
-}
+  unsubscribeGroup: async (req, res) => {
+    try {
+      const data = await User.findByIdAndUpdate(
+        req.user.id,
+        { $pull: { groups: req.params.id } },
+        { new: true }
+      ).populate("groups");
+
+      const Data = await Group.findByIdAndUpdate(
+        req.params.id,
+        { $pull: { followers: req.user.id } },
+        { new: true }
+      );
+
+      res.json(Data);
+    } catch (error) {
+      res.json(error.message);
+    }
+  },
 };

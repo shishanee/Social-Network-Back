@@ -16,5 +16,8 @@ router.patch("/deletefollow", authMiddleware, userController.deleteFollow); // �
 router.patch('/deletefriends', authMiddleware, userController.deleteFriends) // Отписать
 router.patch("/follow/group/:id", authMiddleware, userController.followGroup)//Подписка на группу
 router.patch("/unsubscribe/group/:id", authMiddleware, userController.unsubscribeGroup)//отписка от группы 
+router.patch('/addimage', authMiddleware, fileMiddleware.single('img'), userController.addImage) // добавление фото
+router.get('/allimages', authMiddleware, userController.findImages) // вывод фото
+router.get('/onepeopleimage/:id', userController.onePeopleImage) // вывод всех фото одного пользователя
 
 module.exports = router;

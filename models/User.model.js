@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema({
   firstName: String,
   image: String,
+  images: [
+    {
+      type: String,
+    },
+  ],
   lastName: String,
   followers: [
     {
