@@ -7,9 +7,13 @@ const postSchema = mongoose.Schema({
   },
   text: String,
   image: [],
+  // date: {
+  //   type: Number,
+  //   default: Date.now()
+  // },
   date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   likes: [
     {
@@ -26,7 +30,7 @@ const postSchema = mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
       },
     },
-  ],
+  ]
 });
 
 const Post = mongoose.model("Post", postSchema);
