@@ -1,4 +1,5 @@
 const Post = require("../models/Post.model");
+const Comment = require("../models/Comment.model");
 
 module.exports.postController = {
   createPost: async (req, res) => {
@@ -6,23 +7,28 @@ module.exports.postController = {
       user: req.user.id,
       text: req.body.text,
       image: req.files,
-    }, 
-    )
-    await data.save()
+    });
+    await data.save();
     res.json(data);
   },
 
   getUserPosts: async (req, res) => {
     const data = await Post.find({ user: req.user.id })
-    .populate('user')
-    .populate('image')
-    .populate('likes.user', '-password -groups -posts -friends -followers -__v')
-    .populate('bans.user', '-password -groups -posts -friends -followers -__v');
+      .populate("user")
+      .populate("image")
+      .populate(
+        "likes.user",
+        "-password -groups -posts -friends -followers -__v"
+      )
+      .populate(
+        "bans.user",
+        "-password -groups -posts -friends -followers -__v"
+      );
     res.json(data);
   },
 
   getOnePost: async (req, res) => {
-    const data = await Post.findById(req.params.id)
+    const data = await Post.findById(req.params.id);
     // .populate('likes.user', '-password -groups -posts -friends -followers -__v')
     // .populate('bans.user', '-password -groups -posts -friends -followers -__v');
     res.json(data);
@@ -41,6 +47,7 @@ module.exports.postController = {
   },
 
   deletePost: async (req, res) => {
+    const comment = await Comment.deleteMany({ post: req.params.id });
     const data = await Post.findByIdAndRemove(req.params.id, {
       user: req.user.id,
     });
@@ -69,60 +76,67 @@ module.exports.postController = {
     const { id } = req.user;
 
     await Post.findById(req.params.id)
-    .then(post => {
+      .then((post) => {
         if (!post) {
-          return res.status(404).json({ message: 'Пост не найден' });
+          return res.status(404).json({ message: "Пост не найден" });
         }
-  
-        const userIndex = post.likes.findIndex(like => like.user.toString() === id);
-  
+
+        const userIndex = post.likes.findIndex(
+          (like) => like.user.toString() === id
+        );
+
         if (userIndex === -1) {
           post.likes.push({ user: id });
         } else {
           post.likes.splice(userIndex, 1);
         }
-        post.save()
-          .then(updatedPost => {
+        post
+          .save()
+          .then((updatedPost) => {
             res.status(200).json(updatedPost);
           })
-          .catch(error => {
-            res.status(500).json({ message: 'Произошла ошибка при обновлении поста' });
+          .catch((error) => {
+            res
+              .status(500)
+              .json({ message: "Произошла ошибка при обновлении поста" });
           });
       })
-      .catch(error => {
-        res.status(500).json({ message: 'Произошла ошибка при поиске поста' });
+      .catch((error) => {
+        res.status(500).json({ message: "Произошла ошибка при поиске поста" });
       });
   },
 
-  
-  
   addBan: async (req, res) => {
     const { id } = req.user;
 
     await Post.findById(req.params.id)
-    .then(post => {
+      .then((post) => {
         if (!post) {
-          return res.status(404).json({ message: 'Пост не найден' });
+          return res.status(404).json({ message: "Пост не найден" });
         }
-  
-        const userIndex = post.bans.findIndex(ban => ban.user.toString() === id);
-  
+
+        const userIndex = post.bans.findIndex(
+          (ban) => ban.user.toString() === id
+        );
+
         if (userIndex === -1) {
           post.bans.push({ user: id });
         } else {
           post.bans.splice(userIndex, 1);
         }
-        post.save()
-          .then(updatedPost => {
+        post
+          .save()
+          .then((updatedPost) => {
             res.status(200).json(updatedPost);
           })
-          .catch(error => {
-            res.status(500).json({ message: 'Произошла ошибка при обновлении поста' });
+          .catch((error) => {
+            res
+              .status(500)
+              .json({ message: "Произошла ошибка при обновлении поста" });
           });
       })
-      .catch(error => {
-        res.status(500).json({ message: 'Произошла ошибка при поиске поста' });
+      .catch((error) => {
+        res.status(500).json({ message: "Произошла ошибка при поиске поста" });
       });
   },
-
 };

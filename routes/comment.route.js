@@ -5,11 +5,12 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const router = Router();
 
 router.post("/comment/:id", authMiddleware, commentController.createComment);
+router.get("/comment/all", commentController.getAllComments)
 router.get('/comment', authMiddleware, commentController.getUserComments);
 router.get('/comment/:id', authMiddleware, commentController.getPostComments)
-// router.delete('/comment/:id', authMiddleware, commentController.deleteComment);
-// router.patch('/post/:id', authMiddleware, postController.changePosts);
-// router.patch('/post/like/:id', authMiddleware, postController.addLike)
+router.delete('/comment/:id', authMiddleware, commentController.deleteComment);
+router.patch('/comment/:id', authMiddleware, commentController.updateComment);
+router.patch('/comment/open/:id', authMiddleware, commentController.openComments)
 // router.patch('/post/ban/:id', authMiddleware, postController.addBan)
 
 module.exports = router;
