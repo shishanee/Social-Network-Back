@@ -12,5 +12,6 @@ router.delete('/post/:id', authMiddleware, postController.deletePost);
 router.patch('/post/:id', authMiddleware, postController.changePosts);
 router.patch('/post/like/:id', authMiddleware, postController.addLike)
 router.patch('/post/ban/:id', authMiddleware, postController.addBan)
+router.get('/getposts/:id', postController.getPosts)
 
 module.exports = router;

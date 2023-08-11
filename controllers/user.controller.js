@@ -72,9 +72,11 @@ module.exports.userController = {
     const data = await User.findById(req.user.id)
       .populate("friends")
       .populate("followers")
-      .populate('groups')
+      .populate("groups")
+      .populate("posts");
     res.json(data);
   },
+
   oneUser: async (req, res) => {
     const data = await User.findById(req.params.id)
       .populate("friends")
@@ -168,7 +170,7 @@ module.exports.userController = {
           $push: { images: req.file.path },
         },
         { new: true }
-      ).populate('images')
+      ).populate("images");
 
       res.json(data.images);
     } catch (error) {
@@ -183,13 +185,12 @@ module.exports.userController = {
       res.json(error.message);
     }
   },
-  onePeopleImage: async(req,res) => {
+  onePeopleImage: async (req, res) => {
     try {
-      const data = await User.findById(req.params.id).populate('images')
-      res.json(data.images)
+      const data = await User.findById(req.params.id).populate("images");
+      res.json(data.images);
     } catch (error) {
       res.json(error.message);
-      
     }
   },
 
