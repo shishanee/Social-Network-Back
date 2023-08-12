@@ -14,10 +14,15 @@ const commentSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  open: {
-    type: Boolean,
-    default: false,
-  },
+  image: [],
+  likes: [
+    {
+      user: {
+        ref: "User",
+        type: mongoose.SchemaTypes.ObjectId,
+      },
+    },
+  ],
 });
 
 const Comment = mongoose.model("Comment", commentSchema);
