@@ -20,6 +20,10 @@ module.exports.postController = {
 
     res.json(data);
   },
+  getAllPost:async (req,res) => {
+    const data = await Post.find()
+    res.json(data)
+  },
   getPosts: async (req, res) => {
     const data = await Post.find({ user: req.params.id }).populate("user");
     res.json(data);
