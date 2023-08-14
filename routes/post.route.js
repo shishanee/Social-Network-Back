@@ -5,13 +5,18 @@ const fileMiddleware = require("../middlewares/file.middleware");
 
 const router = Router();
 
-router.post("/post", authMiddleware, fileMiddleware.array('img', 4), postController.createPost);
-router.get('/post', authMiddleware, postController.getUserPosts);
-router.get('/post/:id', authMiddleware, postController.getOnePost)
-router.delete('/post/:id', authMiddleware, postController.deletePost);
-router.patch('/post/:id', authMiddleware, postController.changePosts);
-router.patch('/post/like/:id', authMiddleware, postController.addLike)
-router.patch('/post/ban/:id', authMiddleware, postController.addBan)
-router.get('/getposts/:id', postController.getPosts)
+router.post(
+  "/post",
+  authMiddleware,
+  fileMiddleware.array("img", 4),
+  postController.createPost
+);
+router.get("/post", authMiddleware, postController.getUserPosts);
+router.get("/post/:id", authMiddleware, postController.getOnePost);
+router.delete("/post/:id", authMiddleware, postController.deletePost);
+router.patch("/post/:id", authMiddleware, postController.changePosts);
+router.patch("/post/like/:id", authMiddleware, postController.addLike);
+router.patch("/post/ban/:id", authMiddleware, postController.addBan);
+router.get("/getposts/:id", postController.getPosts);
 
 module.exports = router;

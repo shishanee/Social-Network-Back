@@ -1,5 +1,6 @@
 const Post = require("../models/Post.model");
 const Comment = require("../models/Comment.model");
+const User = require("../models/User.model");
 
 module.exports.postController = {
   createPost: async (req, res) => {
@@ -8,12 +9,20 @@ module.exports.postController = {
       text: req.body.text,
       image: req.files,
     });
-    await data.save();
+
+    const newData = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $push: { posts: data._id },
+      },
+      { new: true }
+    ).populate("posts");
+
     res.json(data);
   },
-  getPosts: async(req,res) => {
-    const data = await Post.find({user:req.params.id}).populate('user')
-    res.json(data)
+  getPosts: async (req, res) => {
+    const data = await Post.find({ user: req.params.id }).populate("user");
+    res.json(data);
   },
 
   getUserPosts: async (req, res) => {
