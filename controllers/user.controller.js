@@ -19,6 +19,7 @@ module.exports.userController = {
       email,
       number,
       password,
+      favorite
     } = req.body;
     const candidate = await User.findOne({ email });
     if (candidate) {
@@ -40,6 +41,7 @@ module.exports.userController = {
       age,
       password: hash,
       posts: posts,
+      favorite
     });
 
     res.json(user);
@@ -222,4 +224,29 @@ module.exports.userController = {
       res.json(error.message);
     }
   },
+  addFavorite: async (req, res)=>{
+    const user = await User.findByIdAndUpdate(req.user.id,{
+      $push:{
+        favorite: req.body.favorite
+      }
+    },{
+      new: true
+    }).populate("favorite")
+    res.json(user)
+  },
+  deleteFavorite: async (req, res) =>{
+    const user = await User.findByIdAndUpdate(req.user.id,{
+      $pull:{
+        favorite: req.body.favorite
+      }
+    },{
+      new: true
+    })
+    res.json(user)
+  },
+  getFavorite: async(req,res)=>{
+    const user = await User.findById(req.user.id).populate("favorite")
+    res.json(user.favorite)
+  }
+
 };
