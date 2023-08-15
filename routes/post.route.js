@@ -19,4 +19,5 @@ router.patch("/post/like/:id", authMiddleware, postController.addLike);
 router.patch("/post/ban/:id", authMiddleware, postController.addBan);
 router.get("/getposts/:id", postController.getPosts);
 router.get("/allposts", postController.getAllPost); // вывод всех постов
+router.get("/onePost/:id", postController.onePost); // вывод одного поста
 module.exports = router;
