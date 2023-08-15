@@ -24,6 +24,11 @@ module.exports.postController = {
     const data = await Post.find().populate('user')
     res.json(data)
   },
+
+  onePost:async (req,res) => {
+    const data = await Post.findById(req.params.id).populate('user')
+    res.json(data)
+  },
   getPosts: async (req, res) => {
     const data = await Post.find({ user: req.params.id }).populate("user");
     res.json(data);
@@ -72,24 +77,6 @@ module.exports.postController = {
   },
 
   addLike: async (req, res) => {
-    // const newData = await Post.findByIdAndUpdate(
-    //   req.params.id,
-    //   { $push: { likes: { user: req.user.id } } },
-    //   { new: true }
-    // )
-    //   .then((updatedPost) => {
-    //     if (updatedPost) {
-    //       res.status(200).json(updatedPost);
-    //     } else {
-    //       res.status(404).json({ message: "Пост не найден" });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     res
-    //       .status(500)
-    //       .json({ message: "Произошла ошибка при добавлении лайка к посту" });
-    //   });
-
     const { id } = req.user;
 
     await Post.findById(req.params.id)
@@ -108,8 +95,11 @@ module.exports.postController = {
           post.likes.splice(userIndex, 1);
         }
         post
+        
           .save()
+          
           .then((updatedPost) => {
+            
             res.status(200).json(updatedPost);
           })
           .catch((error) => {

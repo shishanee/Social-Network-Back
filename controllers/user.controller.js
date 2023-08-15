@@ -76,7 +76,16 @@ module.exports.userController = {
       .populate("posts");
     res.json(data);
   },
-
+  editImage: async (req, res) => {
+    const data = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        image: req.file.path,
+      },
+      { new: true }
+    );
+    res.json(data);
+  },
   oneUser: async (req, res) => {
     const data = await User.findById(req.params.id)
       .populate("friends")
