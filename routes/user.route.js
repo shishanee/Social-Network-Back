@@ -20,6 +20,9 @@ router.patch(
   authMiddleware,
   userController.unsubscribeGroup
 ); //отписка от группы
+router.get('/favorite/get',authMiddleware, userController.getFavorite)
+router.patch('/favorite', authMiddleware, userController.addFavorite) //Добавление в избранное
+router.patch('/favorite/delete',authMiddleware,userController.deleteFavorite) // Удаление из избранных
 router.patch(
   "/addimage",
   authMiddleware,
