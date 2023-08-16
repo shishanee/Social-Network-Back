@@ -226,7 +226,7 @@ module.exports.userController = {
   },
   addFavorite: async (req, res)=>{
     const user = await User.findByIdAndUpdate(req.user.id,{
-      $push:{
+      $addToSet:{
         favorite: req.body.favorite
       }
     },{
