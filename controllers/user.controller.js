@@ -245,7 +245,13 @@ module.exports.userController = {
     res.json(user)
   },
   getFavorite: async(req,res)=>{
-    const user = await User.findById(req.user.id).populate("favorite")
+    const user = await User.findById(req.user.id).populate({
+      path: 'favorite',
+      populate: {
+        path: 'user',
+        model: 'User'
+      }
+    });
     res.json(user.favorite)
   }
 
