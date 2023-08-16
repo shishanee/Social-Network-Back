@@ -7,7 +7,7 @@ module.exports.commentController = {
       user: req.user.id,
       text: req.body.text,
       image: req.files,
-    });
+    })
     res.json(data);
   },
 

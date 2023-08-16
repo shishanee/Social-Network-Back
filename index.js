@@ -16,6 +16,7 @@ app.use(require('./routes/dialog.route'))
 app.use(require('./routes/post.route'))
 app.use(require('./routes/comment.route'))
 app.use(require('./routes/grouppost.route'))
+app.use(require('./routes/favorite.route'))
 
 mongoose
   .connect(

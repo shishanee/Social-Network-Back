@@ -31,6 +31,11 @@ const userSchema = mongoose.Schema({
       type: mongoose.SchemaTypes.ObjectId,
     },
   ],
+  favorite: [
+    {type : mongoose.SchemaTypes.ObjectId,
+    ref : 'Post'
+    }
+  ],
   friends: [
     {
       ref: "User",

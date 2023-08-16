@@ -19,6 +19,7 @@ module.exports.userController = {
       email,
       number,
       password,
+      favorite
     } = req.body;
     const candidate = await User.findOne({ email });
     if (candidate) {
@@ -40,6 +41,7 @@ module.exports.userController = {
       age,
       password: hash,
       posts: posts,
+      favorite
     });
 
     res.json(user);
@@ -76,7 +78,16 @@ module.exports.userController = {
       .populate("posts");
     res.json(data);
   },
-
+  editImage: async (req, res) => {
+    const data = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        image: req.file.path,
+      },
+      { new: true }
+    );
+    res.json(data);
+  },
   oneUser: async (req, res) => {
     const data = await User.findById(req.params.id)
       .populate("friends")
@@ -213,4 +224,35 @@ module.exports.userController = {
       res.json(error.message);
     }
   },
+  addFavorite: async (req, res)=>{
+    const user = await User.findByIdAndUpdate(req.user.id,{
+      $addToSet:{
+        favorite: req.body.favorite
+      }
+    },{
+      new: true
+    }).populate("favorite")
+    res.json(user)
+  },
+  deleteFavorite: async (req, res) =>{
+    const user = await User.findByIdAndUpdate(req.user.id,{
+      $pull:{
+        favorite: req.body.favorite
+      }
+    },{
+      new: true
+    })
+    res.json(user)
+  },
+  getFavorite: async(req,res)=>{
+    const user = await User.findById(req.user.id).populate({
+      path: 'favorite',
+      populate: {
+        path: 'user',
+        model: 'User'
+      }
+    });
+    res.json(user.favorite)
+  }
+
 };
