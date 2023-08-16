@@ -16,7 +16,7 @@ const groupSchema = mongoose.Schema({
   ],
   posts: [
     {
-      ref: "Post",
+      ref: "GroupPost",
       type: mongoose.SchemaTypes.ObjectId,
     },
   ],
